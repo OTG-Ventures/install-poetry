@@ -3,7 +3,8 @@
 set -eo pipefail
 
 download_script() {
-  python3 -c 'import urllib.request, sys; print(urllib.request.urlopen(f"{sys.argv[1]}").read().decode("utf8"))' $1
+  # install.python-poetry.org answers 403 to Python-urllib's default User-Agent (since Nov 2026).
+  python3 -c 'import urllib.request, sys; print(urllib.request.urlopen(urllib.request.Request(sys.argv[1], headers={"User-Agent": "OTG-Ventures-install-poetry"})).read().decode("utf8"))' $1
 }
 
 INSTALL_PATH="${POETRY_HOME:-$HOME/.local}"
